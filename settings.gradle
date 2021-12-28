@@ -1,4 +1,4 @@
 include ':app'
 
-include ':library_ocr'
-project(':library_ocr').projectDir = new File(settingsDir, '../librarys/library_ocr')
+//include ':library_ocr'
+//project(':library_ocr').projectDir = new File(settingsDir, '../librarys/library_ocr')
