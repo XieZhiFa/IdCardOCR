@@ -28,18 +28,14 @@
 -keepattributes EnclosingMethod
 
 
-
+#排除身份证识别库本地方法
+-keep class com.ym.idcard.reg.** {*;}
+-keep class com.ym.ocr.img.** {*;}
+-keep class hotcard.doc.reader.** {*;}
+-keep class com.msd.ocr.idcard.LibraryInitOCR {*;}
 -keepclassmembers class * {
     native <methods>;
 }
 -keepclasseswithmembernames class * {
     native <methods>;
 }
-
-
-
-#排除身份证识别库本地方法
--keep class com.ym.idcard.reg.** {*;}
--keep class com.ym.ocr.img.** {*;}
--keep class hotcard.doc.reader.** {*;}
--keep class com.msd.ocr.idcard.LibraryInitOCR {*;}

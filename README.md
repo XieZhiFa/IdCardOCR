@@ -203,7 +203,7 @@ switch (msg.what){
 
 
 #### 混淆排除
-    已经自动管理混淆,不需要再单独设置混淆排除了
+    参考 app/proguard-rules.pro
 
 
 
