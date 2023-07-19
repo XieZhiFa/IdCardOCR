@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.tomcat.ocr.idcard"
+        minSdkVersion 17
+        targetSdkVersion 26
+        versionCode 20
+        versionName "2.0"
+
+        manifestPlaceholders = [
+                "OCR_API_KEY" : "26f1f6a0d4d7cb0dd0e9b28f4cedef83"    //OCR密钥
+        ]
+
+        ndk {
+            //abiFilters 'armeabi', 'armeabi-v7a', 'x86', 'arm64-v8a'
+
+            //armeabi x86 基本上已经是淘汰了, Android11 以上版本请使用这两个架构的ABI
+            //提示, 某些平板电脑, CPU是 x86的, 如果安装提示无法安装的话, abi 增加x86试试
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
+    }
+    buildTypes {
+        release {
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    signingConfigs {
+        debug {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('../debug.keystore')
+            storePassword 'android'
+        }
+    }
+
+    sourceSets.main {
+        jniLibs.srcDir 'libs'
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            if (outputFileName.endsWith('.apk')) {
+                outputFileName = "idcardOCR-demo-${defaultConfig.versionName}.apk"
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    testImplementation 'junit:junit:4.12'
+
+    //implementation 'com.squareup.picasso:picasso:2.4.0'
+    //implementation(name: 'library-multi-image-selector-1.0.5-SNAPSHOT', ext: 'aar')
+    //implementation(name: 'library-ocr-2.0.1-SNAPSHOT', ext: 'aar')
+    api project(':library_ocr')
+}

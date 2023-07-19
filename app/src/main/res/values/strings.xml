@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">IdcardOCR</string>
+    <array name="types">
+        <item>身份证</item>
+        <item>驾驶证</item>
+        <item>护照</item>
+    </array>
+    <array name="saveImage">
+        <item>保存识别图</item>
+        <item>不保存识别图</item>
+    </array>
+</resources>
