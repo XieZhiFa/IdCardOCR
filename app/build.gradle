@@ -70,6 +70,6 @@ dependencies {
 
     //implementation 'com.squareup.picasso:picasso:2.4.0'
     //implementation(name: 'library-multi-image-selector-1.0.5-SNAPSHOT', ext: 'aar')
-    //implementation(name: 'library-ocr-2.0.1-SNAPSHOT', ext: 'aar')
-    api project(':library_ocr')
+    implementation(name: 'library-ocr-2.0.2-SNAPSHOT', ext: 'aar')
+    //api project(':library_ocr')
 }
