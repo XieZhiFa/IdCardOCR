@@ -171,10 +171,8 @@ ocrDecode.close();
 
 #### 更新日志
 ```apl
-2.0
-1. 由于相机扫描识别容易出错, 所以重新优化放弃用了相机扫描方式, 改为拍照识别了
-2. 更新Android 12 exported 问题
-3. 更新识别结果广播出去防止嗅探问题
+2.1
+1. 更新Apk安装在高版本提示应用版本过低问题.
 ```
 
 
@@ -184,7 +182,7 @@ ocrDecode.close();
     如果只用到身份证识别，可以将驾驶证的so库删除掉，并只使用 armeabi-v7a arm64-v8a 两个架构
     授权密钥请扫描码(image/pay.png) 不白嫖.
     并将applicationId及正式包sha1发给我，我给你KEY.
-    sha1 查看方式: 
+    sha256 查看方式: 
     命令行进入签名文件所在的目录执行:
     keytool -list  -v -keystore 签名文件.keystore -storepass 签名文件密码
 

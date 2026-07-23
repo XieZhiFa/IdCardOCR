@@ -5,20 +5,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.msd.ocr.idcard.LibraryInitOCR;
-import com.ocr.decode.OcrCameraActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+
 import com.ocr.decode.OcrDecodeFactory;
 import com.tomcat.ocr.idcard.databinding.ActivityMainBinding;
 import com.tomcat.ocr.idcard.permissions.EasyPermission;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -91,7 +88,12 @@ public class MainActivity extends AppCompatActivity implements EasyPermission.Pe
         intentFilter.addAction(broadcastAction);
         intentFilter.addCategory(getPackageName());
         resultReceiver = new ResultReceiver();
-        registerReceiver(resultReceiver, intentFilter);
+        ContextCompat.registerReceiver(
+                this,
+                resultReceiver,
+                intentFilter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
     }
 
     private ResultReceiver resultReceiver;

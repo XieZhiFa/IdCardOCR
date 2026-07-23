@@ -4,10 +4,10 @@ buildscript {
     
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:8.5.2'
         
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -20,9 +20,11 @@ allprojects {
     repositories {
         mavenLocal()
         google()
-        jcenter()
-		maven { url "http://nexus.yecon-tech.com/repository/maven-public/" }
-        //maven { url "http://nexus.100ydh.com/repository/maven-public/" }
+        mavenCentral()
+        maven {
+            url "http://nexus.yecon-tech.com/repository/maven-public/"
+            allowInsecureProtocol true
+        }
     }
 
     tasks.withType(Javadoc) {
