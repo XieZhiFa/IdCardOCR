@@ -4,7 +4,7 @@
 
 极速识别中国二代身份证、驾驶证、护照 (无需联网，离线秒扫，极速识别)身份证所有信息, 包含姓名、性别、出生年月、详细地址，正反面。不需要联网即可离线识别身份证所有信息包括新疆少数民族身份证，全网仅此一个，识别速度快，识别率高可保存识别图片。 
 
-<img src='https://github.com/XieZhiFa/IdCardOCR/blob/master/image/device-demo.png?raw=true' width='800' alt='扫描示例'/>
+<img src='https://github.com/XieZhiFa/IdCardOCR/blob/main/image/device-demo.png?raw=true' width='800' alt='扫描示例'/>
 
 
 #### Application中初始化
@@ -24,7 +24,7 @@ OcrDecodeFactory.newBuilder(context)
 
 
 #### 返回结果
-<img src='https://github.com/XieZhiFa/IdCardOCR/blob/master/image/device-result.png?raw=true' width='375' alt='识别结果'/>
+<img src='https://github.com/XieZhiFa/IdCardOCR/blob/main/image/device-result.png?raw=true' width='375' alt='识别结果'/>
 
 ```java
 @Override
@@ -200,7 +200,7 @@ ocrDecode.close();
 
 对着电脑扫描识别率会比较低, 建议使用身份证原件做测试.
 
-![身份证示例图](https://github.com/XieZhiFa/IdCardOCR/blob/master/image/%E7%A4%BA%E4%BE%8B%E8%BA%AB%E4%BB%BD%E8%AF%81.png?raw=true)
+![身份证示例图](https://github.com/XieZhiFa/IdCardOCR/blob/main/image/%E7%A4%BA%E4%BE%8B%E8%BA%AB%E4%BB%BD%E8%AF%81.png?raw=true)
 
-![身份证示例图](https://github.com/XieZhiFa/IdCardOCR/blob/master/image/%e7%a4%ba%e4%be%8b%e9%a9%be%e7%85%a7.jpg?raw=true)
+![身份证示例图](https://github.com/XieZhiFa/IdCardOCR/blob/main/image/%e7%a4%ba%e4%be%8b%e9%a9%be%e7%85%a7.jpg?raw=true)
 
