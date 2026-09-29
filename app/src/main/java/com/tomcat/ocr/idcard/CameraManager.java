@@ -77,6 +77,14 @@ public class CameraManager {
         Camera.Parameters parameters = camera.getParameters();
         parameters.setPreviewSize(mPreviewSize.width,
                 mPreviewSize.height);
+        Camera.Size pictureSize = getOptimalPictureSize(
+                parameters.getSupportedPictureSizes(),
+                (double) mPreviewSize.width / mPreviewSize.height,
+                mPreviewSize.width);
+        if (pictureSize != null) {
+            parameters.setPictureSize(pictureSize.width, pictureSize.height);
+            parameters.setJpegQuality(100);
+        }
         Log.d("zkcam", "pw=" + mPreviewSize.width);
         Log.d("zkcam", "ph=" + mPreviewSize.height);
         camera.setParameters(parameters);
@@ -115,6 +123,30 @@ public class CameraManager {
 
 
         return optimalSize;
+    }
+
+    private Camera.Size getOptimalPictureSize(List<Size> sizes, double targetRatio,
+                                              int minimumWidth) {
+        if (sizes == null || sizes.isEmpty()) {
+            return null;
+        }
+
+        Camera.Size smallestSuitable = null;
+        Camera.Size largestFallback = null;
+        for (Camera.Size size : sizes) {
+            double ratio = (double) size.width / size.height;
+            if (Math.abs(ratio - targetRatio) > 0.02) {
+                continue;
+            }
+            if (size.width >= minimumWidth
+                    && (smallestSuitable == null || size.width < smallestSuitable.width)) {
+                smallestSuitable = size;
+            }
+            if (largestFallback == null || size.width > largestFallback.width) {
+                largestFallback = size;
+            }
+        }
+        return smallestSuitable != null ? smallestSuitable : largestFallback;
     }
 
     /**
@@ -192,10 +224,7 @@ public class CameraManager {
      */
     public synchronized void stopPreview() {
         Log.e(TAG, "stopPreview");
-        if (autoFocusManager != null) {
-            autoFocusManager.stop();
-            autoFocusManager = null;
-        }
+        stopFocus();
         if (camera != null && previewing) {
             camera.stopPreview();
             previewing = false;
@@ -207,6 +236,25 @@ public class CameraManager {
         if(autoFocusManager != null) {
             autoFocusManager.start();
         }
+    }
+
+    public synchronized void stopFocus() {
+        if (autoFocusManager != null) {
+            autoFocusManager.stop();
+            autoFocusManager = null;
+        }
+    }
+
+    public synchronized void resumePreview(Camera.PreviewCallback previewCallback) {
+        if (camera == null) {
+            return;
+        }
+        stopFocus();
+        if (!previewing) {
+            camera.startPreview();
+            previewing = true;
+        }
+        autoFocusManager = new AutoFocusManager(camera, previewCallback);
     }
 
     /**
@@ -242,10 +290,9 @@ public class CameraManager {
      */
     public synchronized void takePicture(final Camera.ShutterCallback shutter, final Camera.PictureCallback raw,
                                          final Camera.PictureCallback jpeg) {
-
+        stopFocus();
         camera.takePicture(shutter, raw, jpeg);
-
-
+        previewing = false;
     }
 
     public int getScreenWidth(Context context) {

@@ -9,9 +9,7 @@ import android.hardware.Camera;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 
 
 /**
@@ -65,12 +63,10 @@ public class ViewfinderView extends View {
 	 * @param pHeight
 	 */
 	public void initFinder(int pWidth,int pHeight,Handler mHandler){
-		m_nImageWidth = pWidth;
-		m_nImageHeight = pHeight;
-		WindowManager manager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-		Display display = manager.getDefaultDisplay();
-		width = display.getWidth();
-		height = display.getHeight();
+		width = getWidth() > 0 ? getWidth() : pWidth;
+		height = getHeight() > 0 ? getHeight() : pHeight;
+		m_nImageWidth = width;
+		m_nImageHeight = height;
 		Log.d("tag", "-1-------->>"+width);
 
 		if(marginT == 0) {
@@ -101,8 +97,8 @@ public class ViewfinderView extends View {
 
 
 
-		int nDisplayWidth = display.getWidth();
-		int nDisplayHeight = display.getHeight();
+		int nDisplayWidth = width;
+		int nDisplayHeight = height;
 
 		int nImageWidth = m_nImageWidth;
 		int nImageHeight  = m_nImageHeight;
@@ -143,6 +139,14 @@ public class ViewfinderView extends View {
 
 	}
 
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		super.onSizeChanged(w, h, oldw, oldh);
+		if (w > 0 && h > 0 && paint != null && (w != oldw || h != oldh)) {
+			initFinder(w, h, null);
+		}
+	}
+
 
 	public void initFinder(int w,int h,int d){}
 
@@ -154,10 +158,8 @@ public class ViewfinderView extends View {
 
 	public Rect getViewfinder(Camera camera) {
 		Rect finderRect = getFinder();
-		WindowManager windowManager = (WindowManager)this.mContext.getSystemService(Context.WINDOW_SERVICE);
-		Display display = windowManager.getDefaultDisplay();
-		float w = (float)display.getWidth();
-		float h = (float)display.getHeight();
+		float w = getWidth();
+		float h = getHeight();
 		int width = camera.getParameters().getPreviewSize().width;
 		int height = camera.getParameters().getPreviewSize().height;
 		float xs = (float)width / w;
@@ -274,14 +276,16 @@ public class ViewfinderView extends View {
 		paint.setAlpha(100);
 //		canvas.drawRect(lineLeft + dLineWidth / 2, lineTop + dLineWidth / 2, lineRight - dLineWidth / 2, lineBottom - dLineWidth / 2, paint);
 
-		//画四周
-		canvas.drawRect(0, 0, width, lineTop - dLineWidth / 2, paint);
+		// Cover the entire edge-to-edge canvas, including system bar areas.
+		int canvasWidth = canvas.getWidth();
+		int canvasHeight = canvas.getHeight();
+		canvas.drawRect(0, 0, canvasWidth, lineTop - dLineWidth / 2, paint);
 
 		canvas.drawRect(0, lineTop - dLineWidth / 2, lineLeft - dLineWidth / 2, lineBottom + dLineWidth / 2, paint);
 
-		canvas.drawRect(0, lineBottom + dLineWidth / 2, width, height, paint);
+		canvas.drawRect(0, lineBottom + dLineWidth / 2, canvasWidth, canvasHeight, paint);
 
-		canvas.drawRect(lineRight + dLineWidth / 2, lineTop - dLineWidth / 2, width, lineBottom + dLineWidth / 2, paint);
+		canvas.drawRect(lineRight + dLineWidth / 2, lineTop - dLineWidth / 2, canvasWidth, lineBottom + dLineWidth / 2, paint);
 
 	}
 }
